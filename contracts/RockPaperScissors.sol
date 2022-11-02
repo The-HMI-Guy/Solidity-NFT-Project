@@ -13,11 +13,12 @@ import "hardhat/console.sol";
 contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
     using Strings for uint256;
 
-  uint256 public immutable maxPerAddressDuringMint;
+  uint256 public immutable maxMintPerAddress;
   uint256 public immutable amountForDevs;
 
   mapping(address => uint256) public allowlist;
-
+bytes32 public merkleRoot;
+mapping(address => bool) public whitelistClaimed;
 //add mint price variable
 
   constructor(
@@ -25,7 +26,7 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
     uint256 collectionSize_,
     uint256 amountForDevs_
   ) ERC721A("RockPaperScissors", "RPS", maxBatchSize_, collectionSize_) {
-    maxPerAddressDuringMint = maxBatchSize_;
+    maxMintPerAddress = maxBatchSize_;
     amountForDevs = amountForDevs_;
   }
     /**
@@ -37,7 +38,16 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
     require(tx.origin == msg.sender, "The caller is another contract");
     _;
   }
+function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
+    // Verify whitelist requirements
+    //require(whitelistMintEnabled, 'The whitelist sale is not enabled!');
+    //require(!whitelistClaimed[_msgSender()], 'Address already claimed!');
+    bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
+    require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
 
+    whitelistClaimed[_msgSender()] = true;
+    _safeMint(_msgSender(), _mintAmount);
+  }
   function allowlistMint() external payable callerIsUser {
    // uint256 price = uint256(saleConfig.mintlistPrice); update with mintprice
     require(price != 0, "allowlist sale has not begun yet");
@@ -77,6 +87,7 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
       payable(msg.sender).transfer(msg.value - price);
     }
   }
+  //Done - maybe change numSlots name?
   //pass the array of addresses with the number of mints for the holder.
   //assuming this should be equal for each holder. 
   function seedAllowlist(address[] memory addresses, uint256[] memory numSlots)
