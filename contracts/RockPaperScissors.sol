@@ -2,32 +2,43 @@
 
 pragma solidity >=0.8.9 <0.9.0;
 
-import 'erc721a/contracts/ERC721A.sol';
+import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "hardhat/console.sol";
 
 contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
     using Strings for uint256;
 
-  uint256 public immutable maxMintPerAddress;
-  uint256 public immutable amountForDevs;
+  uint256 public immutable maxMintAmountPerTx;
+  
+  uint256 public cost;
 
-  mapping(address => uint256) public allowlist;
-bytes32 public merkleRoot;
-mapping(address => bool) public whitelistClaimed;
-//add mint price variable
+  string public uriPrefix = '';
+  string public uriSuffix = '.json';
+  string public hiddenMetadataUri;
+
+  bool public paused = true;
+  bool public whitelistMintEnabled = false;
+  bool public revealed = false;
+
+ mapping(address => uint256) public allowlist;
+// bytes32 public merkleRoot;
+// mapping(address => bool) public whitelistClaimed;
+
 
   constructor(
-    uint256 maxBatchSize_,
+    uint256 maxMintAmountPerTx_,
     uint256 collectionSize_,
-    uint256 amountForDevs_
-  ) ERC721A("RockPaperScissors", "RPS", maxBatchSize_, collectionSize_) {
-    maxMintPerAddress = maxBatchSize_;
-    amountForDevs = amountForDevs_;
+    uint256 cost_,
+    string memory hiddenMetadataUri_
+  ) ERC721A("RockPaperScissors", "RPS", maxMintAmountPerTx_, collectionSize_) {
+    maxMintAmountPerTx = maxMintAmountPerTx_;
+    setCost(cost_);
+    setHiddenMetadataUri(hiddenMetadataUri_);
   }
     /**
      * @dev Ensure a Smart Contract is not interfacing with this contract.
@@ -38,48 +49,39 @@ mapping(address => bool) public whitelistClaimed;
     require(tx.origin == msg.sender, "The caller is another contract");
     _;
   }
-function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
-    // Verify whitelist requirements
-    //require(whitelistMintEnabled, 'The whitelist sale is not enabled!');
-    //require(!whitelistClaimed[_msgSender()], 'Address already claimed!');
-    bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
-    require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
+  modifier mintCompliance(uint256 _mintAmount) {
+    require(_mintAmount > 0 && _mintAmount <= maxMintAmountPerTx, 'Invalid mint amount!');
+    require(totalSupply() + _mintAmount <= collectionSize, 'Max supply exceeded!');
+    _;
+  }
 
-    whitelistClaimed[_msgSender()] = true;
+  modifier mintPriceCompliance(uint256 _mintAmount) {
+    require(msg.value >= cost * _mintAmount, 'Insufficient funds!');
+    _;
+  }
+    function mint(uint256 _mintAmount) public payable callerIsUser mintCompliance(_mintAmount) mintPriceCompliance(_mintAmount){
+    require(!paused, 'The contract is paused!');
+
     _safeMint(_msgSender(), _mintAmount);
   }
+// function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
+//     // Verify whitelist requirements
+//     //require(whitelistMintEnabled, 'The whitelist sale is not enabled!');
+//     //require(!whitelistClaimed[_msgSender()], 'Address already claimed!');
+//     bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
+//     require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
+
+//     whitelistClaimed[_msgSender()] = true;
+//     _safeMint(_msgSender(), _mintAmount);
+//   }
   function allowlistMint() external payable callerIsUser {
-   // uint256 price = uint256(saleConfig.mintlistPrice); update with mintprice
-    require(price != 0, "allowlist sale has not begun yet");
     require(allowlist[msg.sender] > 0, "not eligible for allowlist mint");
     require(totalSupply() + 1 <= collectionSize, "reached max supply");
     allowlist[msg.sender]--;
     _safeMint(msg.sender, 1);
-    refundIfOver(price);
+    refundIfOver(cost);
   }
 
-  function publicSaleMint(uint256 quantity, uint256 callerPublicSaleKey) external payable callerIsUser{
-    SaleConfig memory config = saleConfig;
-    uint256 publicSaleKey = uint256(config.publicSaleKey);
-    uint256 publicPrice = uint256(config.publicPrice);
-    uint256 publicSaleStartTime = uint256(config.publicSaleStartTime);
-    require(
-      publicSaleKey == callerPublicSaleKey,
-      "called with incorrect public sale key"
-    );
-
-    require(
-      isPublicSaleOn(publicPrice, publicSaleKey, publicSaleStartTime),
-      "public sale has not begun yet"
-    );
-    require(totalSupply() + quantity <= collectionSize, "reached max supply");
-    require(
-      numberMinted(msg.sender) + quantity <= maxPerAddressDuringMint,
-      "can not mint this many"
-    );
-    _safeMint(msg.sender, quantity);
-    refundIfOver(publicPrice * quantity);
-  }
 
   function refundIfOver(uint256 price) private {
     require(msg.value >= price, "Need to send more ETH.");
@@ -90,14 +92,8 @@ function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) pub
   //Done - maybe change numSlots name?
   //pass the array of addresses with the number of mints for the holder.
   //assuming this should be equal for each holder. 
-  function seedAllowlist(address[] memory addresses, uint256[] memory numSlots)
-    external
-    onlyOwner
-  {
-    require(
-      addresses.length == numSlots.length,
-      "addresses does not match numSlots length"
-    );
+  function seedAllowlist(address[] memory addresses, uint256[] memory numSlots) external onlyOwner {
+    require(addresses.length == numSlots.length, "addresses does not match numSlots length" );
     //pass the address array to the allowlist mapping, which is indexed by the for loop.
     //during each iteration, the integer(numSlots) is set to the key (address).
     for (uint256 i = 0; i < addresses.length; i++) {
@@ -105,23 +101,6 @@ function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) pub
     }
   }
 
-  // For marketing etc.
-  function devMint(uint256 quantity) external onlyOwner {
-    require(
-      totalSupply() + quantity <= amountForDevs,
-      "too many already minted before dev mint"
-    );
-    require(
-      quantity % maxBatchSize == 0,
-      "can only mint a multiple of the maxBatchSize"
-    );
-    uint256 numChunks = quantity / maxBatchSize;
-    for (uint256 i = 0; i < numChunks; i++) {
-      _safeMint(msg.sender, maxBatchSize);
-    }
-  }
-
-  // // metadata URI
   string private _baseTokenURI;
 
   function _baseURI() internal view virtual override returns (string memory) {
@@ -140,16 +119,21 @@ function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) pub
   function setOwnersExplicit(uint256 quantity) external onlyOwner nonReentrant {
     _setOwnersExplicit(quantity);
   }
+    function setCost(uint256 _cost) public onlyOwner {
+    cost = _cost;
+  }
+    function setPaused(bool _state) public onlyOwner {
+    paused = _state;
+  }
+    function setHiddenMetadataUri(string memory _hiddenMetadataUri) public onlyOwner {
+    hiddenMetadataUri = _hiddenMetadataUri;
+  }
 
   function numberMinted(address owner) public view returns (uint256) {
     return _numberMinted(owner);
   }
 
-  function getOwnershipData(uint256 tokenId)
-    external
-    view
-    returns (TokenOwnership memory)
-  {
+  function getOwnershipData(uint256 tokenId) external view returns (TokenOwnership memory) {
     return ownershipOf(tokenId);
   }
 }
