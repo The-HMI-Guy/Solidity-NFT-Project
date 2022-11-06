@@ -30,13 +30,11 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
     bool public revealed = false;
 
     mapping(address => uint256) public allowlist;
-
-    // bytes32 public merkleRoot;
-    // mapping(address => bool) public whitelistClaimed;
+    mapping(address => bool) public whitelistClaimed;
 
     /*//////////////////////////////////////////////////////////////
                                CONSTRUCTOR
-  //////////////////////////////////////////////////////////////*/
+    //////////////////////////////////////////////////////////////*/
     constructor(
         uint256 maxMintAmountPerTx_,
         uint256 collectionSize_,
@@ -103,16 +101,16 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
         _safeMint(_msgSender(), _mintAmount);
     }
 
-    // function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
-    //     // Verify whitelist requirements
-    //     //require(whitelistMintEnabled, 'The whitelist sale is not enabled!');
-    //     //require(!whitelistClaimed[_msgSender()], 'Address already claimed!');
-    //     bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
-    //     require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
+    function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
+        // Verify whitelist requirements
+        require(whitelistMintEnabled, "The whitelist sale is not enabled!");
+        require(!whitelistClaimed[_msgSender()], "Address already claimed!");
+        bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
+        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
 
-    //     whitelistClaimed[_msgSender()] = true;
-    //     _safeMint(_msgSender(), _mintAmount);
-    //   }
+        whitelistClaimed[_msgSender()] = true;
+        _safeMint(_msgSender(), _mintAmount);
+      }
     function allowlistMint() external payable callerIsUser {
         require(allowlist[msg.sender] > 0, "not eligible for allowlist mint");
         require(totalSupply() + 1 <= collectionSize, "reached max supply");
