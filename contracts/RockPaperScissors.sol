@@ -2,7 +2,7 @@
 
 pragma solidity >=0.8.9 <0.9.0;
 
-import "erc721a/contracts/ERC721A.sol";
+import 'erc721a/contracts/extensions/ERC721AQueryable.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -101,16 +101,23 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
         _safeMint(_msgSender(), _mintAmount);
     }
 
-    function whitelistMint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
+    function whitelistMint(
+        uint256 _mintAmount,
+        bytes32[] calldata _merkleProof
+    ) public payable {
         // Verify whitelist requirements
         require(whitelistMintEnabled, "The whitelist sale is not enabled!");
         require(!whitelistClaimed[_msgSender()], "Address already claimed!");
         bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
-        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
+        require(
+            MerkleProof.verify(_merkleProof, merkleRoot, leaf),
+            "Invalid proof!"
+        );
 
         whitelistClaimed[_msgSender()] = true;
         _safeMint(_msgSender(), _mintAmount);
-      }
+    }
+
     function allowlistMint() external payable callerIsUser {
         require(allowlist[msg.sender] > 0, "not eligible for allowlist mint");
         require(totalSupply() + 1 <= collectionSize, "reached max supply");
@@ -155,6 +162,10 @@ contract RockPaperScissors is ERC721A, Ownable, ReentrancyGuard {
 
     function numberMinted(address owner) public view returns (uint256) {
         return _numberMinted(owner);
+    }
+
+    function _startTokenId() internal view virtual override returns (uint256) {
+        return 1;
     }
 
     function tokenURI(
