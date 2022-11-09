@@ -17,10 +17,9 @@
   },
   "homepage": "https://github.com/The-HMI-Guy/Solidity-NFT-Project#readme",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@openzeppelin/hardhat-upgrades": "^1.21.0",
     "erc721a": "^4.2.3",
-    "erc721a-upgradeable": "^4.2.2",
     "hardhat": "^2.12.1",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-rc.1"
