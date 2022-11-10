@@ -39,7 +39,6 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   string public uriPrefix = "";
   string public uriSuffix = ".json";
   string public hiddenMetadataUri;
-  string private _baseTokenURI;
 
   // =============================================================
   //                          CONSTRUCTOR
@@ -126,9 +125,6 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   // =============================================================
   //                    ADDRESS DATA OPERATIONS
   // =============================================================
-  function _baseURI() internal view virtual override returns (string memory) {
-    return _baseTokenURI;
-  }
 
   function withdrawMoney() external onlyOwner nonReentrant {
     (bool success, ) = msg.sender.call{ value: address(this).balance }("");
@@ -145,7 +141,7 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
 
   function tokenURI(
     uint256 _tokenId
-  ) public view virtual override (ERC721A, IERC721A) returns (string memory) {
+  ) public view virtual override(ERC721A, IERC721A) returns (string memory) {
     require(
       _exists(_tokenId),
       "ERC721Metadata: URI query for nonexistent token"
@@ -188,10 +184,6 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
     string memory _hiddenMetadataUri
   ) public onlyOwner {
     hiddenMetadataUri = _hiddenMetadataUri;
-  }
-
-  function setBaseURI(string calldata baseURI) external onlyOwner {
-    _baseTokenURI = baseURI;
   }
 
   function setUriPrefix(string memory _uriPrefix) public onlyOwner {
