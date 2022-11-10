@@ -110,4 +110,67 @@ describe("RPS - Unit Testing", function () {
       );
     });
   });
+  describe("setHiddenMetadataUri", function () {
+    it("Should be reverted because the caller is not owner", async function () {
+      const expectedValue =
+        "ipfs://QmZD66sq4Em1xQKSchg45q2AtTf8qts5LZMPx3kCqPYpQg/hidden.png";
+
+      await expect(
+        rockPaperScissorsContract
+          .connect(addr1)
+          .setHiddenMetadataUri(expectedValue)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("Should set hidden metadata uri by owner", async function () {
+      const expectedValue =
+        "ipfs://QmZD66sq4Em1xQKSchg45q2AtTf8qts5LZMPx3kCqPYpQg/hidden.png";
+
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setHiddenMetadataUri(expectedValue);
+      expect(await rockPaperScissorsContract.hiddenMetadataUri()).to.equal(
+        expectedValue
+      );
+    });
+  });
+  describe("setUriPrefix", function () {
+    it("Should be reverted because the caller is not owner", async function () {
+      const expectedValue =
+        "ipfs://QmWBPophECw4QxtNkFZGXzevGVRKQ5LZXTnpyTXTnqXFRg/";
+
+      await expect(
+        rockPaperScissorsContract.connect(addr1).setUriPrefix(expectedValue)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("Should set uri prefix by owner", async function () {
+      const expectedValue =
+        "ipfs://QmWBPophECw4QxtNkFZGXzevGVRKQ5LZXTnpyTXTnqXFRg/";
+
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setUriPrefix(expectedValue);
+      expect(await rockPaperScissorsContract.uriPrefix()).to.equal(
+        expectedValue
+      );
+    });
+  });
+  describe("setUriSuffix", function () {
+    it("Should be reverted because the caller is not owner", async function () {
+      const expectedValue = ".json";
+
+      await expect(
+        rockPaperScissorsContract.connect(addr1).setUriSuffix(expectedValue)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("Should set uri suffix by owner", async function () {
+      const expectedValue = ".json";
+
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setUriSuffix(expectedValue);
+      expect(await rockPaperScissorsContract.uriSuffix()).to.equal(
+        expectedValue
+      );
+    });
+  });
 });
