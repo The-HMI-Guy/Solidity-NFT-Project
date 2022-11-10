@@ -31,7 +31,6 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   bool public whitelistMintEnabled = false;
   bool public revealed = false;
 
-  // mapping(address => uint256) public allowlist;
   mapping(address => uint) public whitelistClaimed;
 
   // =============================================================
@@ -124,13 +123,9 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
     _safeMint(wallet, amount);
   }
 
-  function refundIfOver(uint256 _price) private {
-    require(msg.value >= _price, "Need to send more ETH.");
-    if (msg.value > _price) {
-      payable(msg.sender).transfer(msg.value - _price);
-    }
-  }
-
+  // =============================================================
+  //                    ADDRESS DATA OPERATIONS
+  // =============================================================
   function _baseURI() internal view virtual override returns (string memory) {
     return _baseTokenURI;
   }
@@ -150,7 +145,7 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
 
   function tokenURI(
     uint256 _tokenId
-  ) public view virtual override(ERC721A) returns (string memory) {
+  ) public view virtual override (ERC721A, IERC721A) returns (string memory) {
     require(
       _exists(_tokenId),
       "ERC721Metadata: URI query for nonexistent token"
@@ -207,4 +202,3 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
     uriSuffix = _uriSuffix;
   }
 }
-//["0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2","0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db","0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db"],["0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db"],["0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB"]
