@@ -1,6 +1,9 @@
 const { expect, assert } = require("chai");
 const { ethers } = require("hardhat");
 
+// =============================================================
+//                          SMART CONTRACT - UNIT TESTING
+// =============================================================
 describe("RPS - Unit Testing", function () {
   let RockPaperScissors,
     rockPaperScissorsContract,
