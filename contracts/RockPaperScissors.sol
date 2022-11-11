@@ -46,11 +46,13 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   constructor(
     uint256 _maxMintAmountPerTx,
     uint _price,
+    uint _wlprice,
     string memory _hiddenMetadataUri,
     bytes32 _merkleRoot
   ) ERC721A("RockPaperScissors", "RPS") {
     maxMintAmountPerTx = _maxMintAmountPerTx;
-    setCost(_price);
+    setPrice(_price);
+    setWLPrice(_wlprice);
     setHiddenMetadataUri(_hiddenMetadataUri);
     merkleRoot = _merkleRoot;
   }
@@ -103,9 +105,14 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   function whitelistMint(
     uint256 _mintAmount,
     bytes32[] calldata _merkleProof
-  ) public payable {
+  )
+    public
+    payable
+    mintCompliance(_mintAmount)
+    mintPriceCompliance(_mintAmount)
+  {
     require(whitelistMintEnabled, "The whitelist sale is not enabled!");
-    require(whitelistClaimed[msg.sender] > 2, "Address already claimed!");
+    require(whitelistClaimed[msg.sender] < 2, "Address already claimed!");
     bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
     require(
       MerkleProof.verify(_merkleProof, merkleRoot, leaf),
@@ -117,7 +124,7 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   }
 
   function airdrop(address wallet, uint256 amount) external onlyOwner {
-    require(totalSupply() + amount < MAX_SUPPLY + 1, "exceed max supply");
+    require(totalSupply() + amount < MAX_SUPPLY + 1, "Exceed max supply!");
 
     _safeMint(wallet, amount);
   }
@@ -160,12 +167,12 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
         : "";
   }
 
-  function setCost(uint _price) public onlyOwner {
+  function setPrice(uint _price) public onlyOwner {
     price = _price;
   }
 
-  function setWLPrice(uint amount) external onlyOwner {
-    wlPrice = amount;
+  function setWLPrice(uint _wlprice) public onlyOwner {
+    wlPrice = _wlprice;
   }
 
   function setPaused(bool _state) public onlyOwner {
