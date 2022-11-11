@@ -14,44 +14,281 @@ describe("RPS - Unit Testing", function () {
     [owner, addr1, addr2, addr3, ...addrs] = await ethers.getSigners();
     rockPaperScissorsContract = await RockPaperScissors.deploy(
       5,
-      3,
-      "test",
+      ethers.BigNumber.from("1000000000000000000"), //1ETH
+      ethers.BigNumber.from("1000000000000000000"), //1ETH
+      "ipfs://QmZD66sq4Em1xQKSchg45q2AtTf8qts5LZMPx3kCqPYpQg/hidden.png",
       ethers.BigNumber.from(
-        "0xa36a3ef86d1afc6e7ae3987f8627343221bef8208cdcd5ae20febccf38500f0f"
+        "0x04c8b7dc04c57c4e8e83fff68c0e603c2871484788a158e8c63854ecd5d256ee"
       )
     );
   });
+  // =============================================================
+  //                          DEPLOY
+  // =============================================================
   describe("Deployment", function () {
     it("Should set the right owner", async function () {
       expect(await rockPaperScissorsContract.owner()).to.equal(owner.address);
     });
   });
-  //Testing set functions.
-  describe("setCost", function () {
+  // =============================================================
+  //                          MINT
+  // =============================================================
+  describe("mint", function () {
+    // it("Should contract calling mint function", async function () {
+    //   await rockPaperScissorsContract.connect(owner).setPaused(false);
+    //   expect(await rockPaperScissorsContract.paused()).to.equal(false);
+    //   const expectedValue = 1;
+    //   const overrides = {
+    //     value: ethers.utils.parseEther("5"),
+    //   };
+
+    //   await expect(
+    //     rockPaperScissorsContract.connect("0x777").mint(expectedValue, overrides)
+    //   ).to.be.revertedWith("Invalid mint amount!");
+    // });
+    it("Should revert because _mintAmount is 0", async function () {
+      await rockPaperScissorsContract.connect(owner).setPaused(false);
+      expect(await rockPaperScissorsContract.paused()).to.equal(false);
+      const expectedValue = 0;
+      const overrides = {
+        value: ethers.utils.parseEther("0.1"),
+      };
+
+      await expect(
+        rockPaperScissorsContract.connect(owner).mint(expectedValue, overrides)
+      ).to.be.revertedWith("Invalid mint amount!");
+    });
+    it("Should revert because insufficient funds were sent", async function () {
+      await rockPaperScissorsContract.connect(owner).setPaused(false);
+      expect(await rockPaperScissorsContract.paused()).to.equal(false);
+      const expectedValue = 1;
+      const overrides = {
+        value: ethers.utils.parseEther("0.1"),
+      };
+
+      await expect(
+        rockPaperScissorsContract.connect(owner).mint(expectedValue, overrides)
+      ).to.be.revertedWith("Insufficient funds!");
+    });
+    it("Should revert because contract is paused", async function () {
+      const expectedValue = 1;
+      const overrides = {
+        value: ethers.utils.parseEther("5"),
+      };
+
+      await expect(
+        rockPaperScissorsContract.connect(owner).mint(expectedValue, overrides)
+      ).to.be.revertedWith("The contract is paused!");
+    });
+    it("Should mint x tokens", async function () {
+      await rockPaperScissorsContract.connect(owner).setPaused(false);
+      expect(await rockPaperScissorsContract.paused()).to.equal(false);
+      const expectedValue = 1;
+      const overrides = {
+        value: ethers.utils.parseEther("5"),
+      };
+
+      await rockPaperScissorsContract
+        .connect(owner)
+        .mint(expectedValue, overrides);
+    });
+  });
+  // =============================================================
+  //                          WHITELIST
+  // =============================================================
+  describe("whitelist", function () {
+    it("Should revert because _mintAmount is 0", async function () {
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setWhitelistMintEnabled(true);
+      expect(await rockPaperScissorsContract.whitelistMintEnabled()).to.equal(
+        true
+      );
+
+      const expectedValue = 0;
+      const overrides = {
+        value: ethers.utils.parseEther("0.1"),
+      };
+
+      const proof = [
+        "0xe5c951f74bc89efa166514ac99d872f6b7a3c11aff63f51246c3742dfa925c9b",
+        "0xf4ca8532861558e29f9858a3804245bb30f0303cc71e4192e41546237b6ce58b",
+        "0xc445abb61a1483dd60e8bba398dcc2dfac824270a1d4e8d2260b6712c9dfc12a",
+      ];
+
+      await expect(
+        rockPaperScissorsContract
+          .connect(owner)
+          .whitelistMint(expectedValue, proof, overrides)
+      ).to.be.revertedWith("Invalid mint amount!");
+    });
+    it("Should revert because insufficient funds were sent", async function () {
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setWhitelistMintEnabled(true);
+      expect(await rockPaperScissorsContract.whitelistMintEnabled()).to.equal(
+        true
+      );
+
+      const expectedValue = 2;
+      const overrides = {
+        value: ethers.utils.parseEther("0.1"),
+      };
+
+      const proof = [
+        "0xe5c951f74bc89efa166514ac99d872f6b7a3c11aff63f51246c3742dfa925c9b",
+        "0xf4ca8532861558e29f9858a3804245bb30f0303cc71e4192e41546237b6ce58b",
+        "0xc445abb61a1483dd60e8bba398dcc2dfac824270a1d4e8d2260b6712c9dfc12a",
+      ];
+
+      await expect(
+        rockPaperScissorsContract
+          .connect(owner)
+          .whitelistMint(expectedValue, proof, overrides)
+      ).to.be.revertedWith("Insufficient funds!");
+    });
+    it("Should revert if whitelist is not enabled", async function () {
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setWhitelistMintEnabled(false);
+      expect(await rockPaperScissorsContract.whitelistMintEnabled())
+        .to.equal(false)
+        .to.be.revertedWith("The whitelist sale is not enabled!");
+    });
+    it("Should revert if claimer mints more than 2 tokens", async function () {
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setWhitelistMintEnabled(true);
+      expect(await rockPaperScissorsContract.whitelistMintEnabled()).to.equal(
+        true
+      );
+      const expectedValue = 1;
+      const proof = [
+        "0xe5c951f74bc89efa166514ac99d872f6b7a3c11aff63f51246c3742dfa925c9b",
+        "0xf4ca8532861558e29f9858a3804245bb30f0303cc71e4192e41546237b6ce58b",
+        "0xc445abb61a1483dd60e8bba398dcc2dfac824270a1d4e8d2260b6712c9dfc12a",
+      ];
+
+      const overrides = {
+        value: ethers.utils.parseEther("5"),
+      };
+      //wl mint #1
+      await rockPaperScissorsContract
+        .connect(owner)
+        .whitelistMint(expectedValue, proof, overrides);
+      //wl mint #2
+      await rockPaperScissorsContract
+        .connect(owner)
+        .whitelistMint(expectedValue, proof, overrides);
+      //wl mint #3
+      await expect(
+        rockPaperScissorsContract
+          .connect(owner)
+          .whitelistMint(expectedValue, proof, overrides)
+      ).to.be.revertedWith("Address already claimed!");
+    });
+    it("Should revert if proof is invalid", async function () {
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setWhitelistMintEnabled(true);
+      expect(await rockPaperScissorsContract.whitelistMintEnabled()).to.equal(
+        true
+      );
+      const expectedValue = 1;
+      const proof = [
+        "0xe5c951f74bc89efa166514ac99d872f6b7a3c11aff63f51246c3742dfa925c9b",
+        "0xf4ca8532861558e29f9858a3804245bb30f0303cc71e4192e41546237b6ce58b",
+        "0xc445abb61a1483dd60e8bba398dcc2dfac824270a1d4e8d2260b6712c9dfc777",
+      ];
+
+      const overrides = {
+        value: ethers.utils.parseEther("5"),
+      };
+      //wl mint #1
+      await expect(
+        rockPaperScissorsContract
+          .connect(owner)
+          .whitelistMint(expectedValue, proof, overrides)
+      ).to.be.revertedWith("Invalid proof!");
+    });
+    it("Should mint up to 2 tokens", async function () {
+      await rockPaperScissorsContract
+        .connect(owner)
+        .setWhitelistMintEnabled(true);
+      expect(await rockPaperScissorsContract.whitelistMintEnabled()).to.equal(
+        true
+      );
+      const expectedValue = 1;
+      const proof = [
+        "0xe5c951f74bc89efa166514ac99d872f6b7a3c11aff63f51246c3742dfa925c9b",
+        "0xf4ca8532861558e29f9858a3804245bb30f0303cc71e4192e41546237b6ce58b",
+        "0xc445abb61a1483dd60e8bba398dcc2dfac824270a1d4e8d2260b6712c9dfc12a",
+      ];
+
+      const overrides = {
+        value: ethers.utils.parseEther("5"),
+      };
+      //wl mint #1
+      await rockPaperScissorsContract
+        .connect(owner)
+        .whitelistMint(expectedValue, proof, overrides);
+      //wl mint #2
+      await rockPaperScissorsContract
+        .connect(owner)
+        .whitelistMint(expectedValue, proof, overrides);
+    });
+  });
+  // =============================================================
+  //                          AIRDROP
+  // =============================================================
+  describe("airdrop", function () {
+    it("Should be reverted because the caller is not owner", async function () {
+      const expectedValue = 2;
+
+      await expect(
+        rockPaperScissorsContract
+          .connect(addr1)
+          .airdrop("0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2", expectedValue)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+    it("Should be reverted because amount exceeds max supply", async function () {
+      const expectedValue = 800;
+
+      await expect(
+        rockPaperScissorsContract
+          .connect(owner)
+          .airdrop("0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2", expectedValue)
+      ).to.be.revertedWith("Exceed max supply!");
+    });
+  });
+  // =============================================================
+  //                          SETTERS
+  // =============================================================
+  describe("setPrice", function () {
     it("Should be reverted because the caller is not owner", async function () {
       const expectedValue = 25;
 
       await expect(
-        rockPaperScissorsContract.connect(addr1).setCost(expectedValue)
+        rockPaperScissorsContract.connect(addr1).setPrice(expectedValue)
       ).to.be.revertedWith("Ownable: caller is not the owner");
     });
     it("Should set price by owner", async function () {
-      const expectedValue = 25;
+      const expectedValue = 4;
 
-      await rockPaperScissorsContract.connect(owner).setCost(expectedValue);
+      await rockPaperScissorsContract.connect(owner).setPrice(expectedValue);
       expect(await rockPaperScissorsContract.price()).to.equal(expectedValue);
     });
   });
   describe("setWLPrice", function () {
     it("Should be reverted because the caller is not owner", async function () {
-      const expectedValue = 25;
+      const expectedValue = 4;
 
       await expect(
         rockPaperScissorsContract.connect(addr1).setWLPrice(expectedValue)
       ).to.be.revertedWith("Ownable: caller is not the owner");
     });
     it("Should set whitelist price by owner", async function () {
-      const expectedValue = 25;
+      const expectedValue = 4;
 
       await rockPaperScissorsContract.connect(owner).setWLPrice(expectedValue);
       expect(await rockPaperScissorsContract.wlPrice()).to.equal(expectedValue);
@@ -164,7 +401,6 @@ describe("RPS - Unit Testing", function () {
     });
     it("Should set uri suffix by owner", async function () {
       const expectedValue = ".json";
-
       await rockPaperScissorsContract
         .connect(owner)
         .setUriSuffix(expectedValue);
