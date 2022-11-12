@@ -37,18 +37,6 @@ describe("RPS - Unit Testing", function () {
   //                          MINT
   // =============================================================
   describe("mint", function () {
-    // it("Should contract calling mint function", async function () {
-    //   await rockPaperScissorsContract.connect(owner).setPaused(false);
-    //   expect(await rockPaperScissorsContract.paused()).to.equal(false);
-    //   const expectedValue = 1;
-    //   const overrides = {
-    //     value: ethers.utils.parseEther("5"),
-    //   };
-
-    //   await expect(
-    //     rockPaperScissorsContract.connect("0x777").mint(expectedValue, overrides)
-    //   ).to.be.revertedWith("Invalid mint amount!");
-    // });
     it("Should revert because _mintAmount is 0", async function () {
       await rockPaperScissorsContract.connect(owner).setPaused(false);
       expect(await rockPaperScissorsContract.paused()).to.equal(false);
