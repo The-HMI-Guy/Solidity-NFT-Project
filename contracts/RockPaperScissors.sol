@@ -108,6 +108,7 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
   )
     public
     payable
+    callerIsUser
     mintCompliance(_mintAmount)
     mintPriceCompliance(_mintAmount)
   {
@@ -123,7 +124,10 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
     _safeMint(msg.sender, _mintAmount);
   }
 
-  function airdrop(address wallet, uint256 amount) external onlyOwner {
+  function airdrop(
+    address wallet,
+    uint256 amount
+  ) external onlyOwner callerIsUser {
     require(totalSupply() + amount < MAX_SUPPLY + 1, "Exceed max supply!");
 
     _safeMint(wallet, amount);
