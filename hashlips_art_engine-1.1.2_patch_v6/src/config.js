@@ -5,18 +5,18 @@ const { NETWORK } = require(`${basePath}/constants/network.js`);
 const network = NETWORK.eth;
 
 // General metadata for Ethereum
-const namePrefix = "ScissorsPaperRock";
+const namePrefix = "RockPaperScissors";
 const description =
-  "Remember that game we all use to play? Get ready to collect the (limited range) of NFT's!";
+  "A classic game - Rock, Paper, Scissors!";
 const baseUri = "ipfs://NewUriToReplace";
 
 const solanaMetadata = {
-  symbol: "YC",
+  symbol: "RPS",
   seller_fee_basis_points: 300, // Define how much % you want from secondary market sales 1000 = 10%
-  external_url: "https://opensea.io/SirWest",
+  external_url: "https://opensea.io/hmitest",
   creators: [
     {
-      address: "0x701C462BF86DBc2bd0C3e77C9a53De38B9A984eD",
+      address: "0x7B05E576A5aC57aBebc1D26F83954b2c522FAa3d",
       share: 100,
     },
   ],
@@ -25,7 +25,7 @@ const solanaMetadata = {
 // If you have selected Solana then the collection starts from 0 automatically
 const layerConfigurations = [
   {
-    growEditionSizeTo: 50,
+    growEditionSizeTo: 777,
     layersOrder: [
       { name: "Background" },
       { name: "ScissorsPaperRock" },
@@ -47,7 +47,7 @@ const format = {
 };
 
 const gif = {
-  export: true,
+  export: false,
   repeat: 0,
   quality: 100,
   delay: 500,
