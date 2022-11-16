@@ -13,8 +13,8 @@
 ## General info
 
 https://hardhat.org/tutorial/creating-a-new-hardhat-project
-Contract address: 0x404415a8Af8E26f96ae60363af1a080084b1ceF1
-Etherscan: https://goerli.etherscan.io/address/0x404415a8Af8E26f96ae60363af1a080084b1ceF1#code
+Contract address: 0x58a56731D3177eeC6e395B4397c00F6E1A1436a8
+Etherscan: https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8#code
 
 ## Features
 
