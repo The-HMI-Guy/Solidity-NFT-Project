@@ -150,6 +150,10 @@ contract RockPaperScissors is ERC721AQueryable, Ownable, ReentrancyGuard {
     return 1;
   }
 
+  function _baseURI() internal view virtual override returns (string memory) {
+    return uriPrefix;
+  }
+
   function tokenURI(
     uint256 _tokenId
   ) public view virtual override(ERC721A, IERC721A) returns (string memory) {
