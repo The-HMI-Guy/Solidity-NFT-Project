@@ -1,6 +1,6 @@
 import "./App.css";
 import { ethers } from "ethers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [account, setAccount] = useState(null); //State Variable - when a state variable is changes, the app will re-render
@@ -14,10 +14,17 @@ function App() {
       console.log("Please Install Metamask.");
     }
   };
+  useEffect(() => {
+    initConnection();
+  }, []);
   return (
-    <div>
-      <button onClick={initConnection}>Connect</button>
-      <p>{account}</p>
+    <div className="page">
+      <div>
+        <img />
+        <p>123</p>
+        <button onClick={initConnection}>Connect</button>
+        <p>{account}</p>
+      </div>
     </div>
   );
 }
