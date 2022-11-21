@@ -11,8 +11,10 @@ function App() {
     tokenName: "-",
     tokenSymbol: "-",
     maxSupply: "-",
+    mintPrice: "-",
   });
-  //
+  //const contractPrice = await contract.storedPrice();
+  //setStoredPrice(parseInt(contractPrice) / 100000000);
 
   const [account, setAccount] = useState(""); //State Variable - when a state variable is changes, the app will re-render
   const [totalSup, setTotalSup] = useState("");
@@ -30,15 +32,15 @@ function App() {
     const tokenName = await contract.name();
     const tokenSymbol = await contract.symbol();
     const maxSupply = await contract.MAX_SUPPLY();
-    console.log(maxSupply.toString());
-    console.log(tokenSymbol.toString());
-    console.log(tokenName.toString());
+    const price = (await contract.price()) / 1000000000000000000;
+    console.log(price.toString());
 
     setContractInfo({
       address: "123",
       tokenName,
       tokenSymbol,
       maxSupply,
+      price,
     });
     console.log(contractInfo.maxSupply.toString());
     console.log(contractInfo.maxSupply);
@@ -68,7 +70,8 @@ function App() {
           className="osIcon"
         />
         <p>
-          {totalSup.toString()} / {contractInfo.maxSupply.toString()}
+          {totalSup.toString()} / {contractInfo.maxSupply.toString()} Price{" "}
+          {contractInfo.price.toString()}
           <span>
             <FaEthereum style={{ marginLeft: "5px" }} />
           </span>
