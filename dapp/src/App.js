@@ -13,8 +13,6 @@ function App() {
     maxSupply: "-",
     mintPrice: "-",
   });
-  //const contractPrice = await contract.storedPrice();
-  //setStoredPrice(parseInt(contractPrice) / 100000000);
 
   const [account, setAccount] = useState(""); //State Variable - when a state variable is changes, the app will re-render
   const [totalSup, setTotalSup] = useState("");
