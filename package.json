@@ -27,6 +27,7 @@
     "prettier-plugin-solidity": "^1.0.0-rc.1"
   },
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.7",
     "@openzeppelin/contracts": "^4.7.3",
     "dotenv": "^16.0.3",
     "keccak256": "^1.0.6",
