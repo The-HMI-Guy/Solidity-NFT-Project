@@ -31,17 +31,15 @@ function App() {
     const tokenSymbol = await contract.symbol();
     const maxSupply = await contract.MAX_SUPPLY();
     const price = (await contract.price()) / 1000000000000000000;
-    console.log(price.toString());
+    //console.log(price);
 
     setContractInfo({
-      address: "123",
+      address: "",
       tokenName,
       tokenSymbol,
       maxSupply,
       price,
     });
-    console.log(contractInfo.maxSupply.toString());
-    console.log(contractInfo.maxSupply);
   };
 
   const initConnection = async () => {
@@ -55,9 +53,10 @@ function App() {
       console.log("Please Install Metamask.");
     }
   };
+
   useEffect(() => {
-    initConnection();
     totalSupply();
+    initConnection();
   }, []);
   return (
     <div className="page">
@@ -69,7 +68,7 @@ function App() {
         />
         <p>
           {totalSup.toString()} / {contractInfo.maxSupply.toString()} Price{" "}
-          {contractInfo.price.toString()}
+          {contractInfo.price}
           <span>
             <FaEthereum style={{ marginLeft: "5px" }} />
           </span>
