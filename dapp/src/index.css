@@ -8,3 +8,7 @@ body {
   background-color: rgb(218, 213, 213);
   color: white;
 }
+.hmiIcon {
+  width: 200px;
+  height: 200px;
+}
