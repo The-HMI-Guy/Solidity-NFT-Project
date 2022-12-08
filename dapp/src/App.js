@@ -5,7 +5,10 @@ import { FaEthereum } from "react-icons/fa";
 import abi from "./abi/abi.json";
 
 function App() {
-  //TRIAL
+  const [account, setAccount] = useState(""); //State Variable - when a state variable is changes, the app will re-render
+  const [totalSup, setTotalSup] = useState("");
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
   const [contractInfo, setContractInfo] = useState({
     address: "-",
     tokenName: "-",
@@ -13,10 +16,6 @@ function App() {
     maxSupply: "-",
     mintPrice: "-",
   });
-
-  const [account, setAccount] = useState(""); //State Variable - when a state variable is changes, the app will re-render
-  const [totalSup, setTotalSup] = useState("");
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const totalSupply = async () => {
     const contract = new ethers.Contract(
@@ -53,22 +52,43 @@ function App() {
       console.log("Please Install Metamask.");
     }
   };
-
+  const mintNFTs = () => {
+    let cost = contractInfo.price;
+    //add gas
+  };
   useEffect(() => {
-    totalSupply();
     initConnection();
   }, []);
+  useEffect(() => {
+    totalSupply();
+  }, []);
+
   return (
     <div className="page">
       <div className="header">
         <img
-          src={require(`./assets/images/OS-Blue.png`)}
-          alt="OpenSea"
-          className="osIcon"
+          src={require(`./assets/images/ape.png`)}
+          alt="hmiLogo"
+          className="hmiIcon"
         />
+        <a
+          href="https://testnets.opensea.io/collection/rockpaperscissors-9vlkhasx9z"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            src={require(`./assets/images/OS-Blue.png`)}
+            alt="OpenSea"
+            className="osIcon"
+          />
+        </a>
+
         <p>
-          {totalSup.toString()} / {contractInfo.maxSupply.toString()} Price{" "}
-          {contractInfo.price}
+          Total Supply {totalSup.toString()} /{" "}
+          {contractInfo.maxSupply.toString()}
+        </p>
+        <p>
+          Price {contractInfo.price}
           <span>
             <FaEthereum style={{ marginLeft: "5px" }} />
           </span>
@@ -78,8 +98,15 @@ function App() {
             Connect
           </button>
         ) : (
-          <p>...{account.substring(account.length - 7)}</p>
+          <p>
+            {account.slice(0, 5)}...{account.substring(account.length - 4)}
+          </p>
         )}
+      </div>
+      <div>
+        <button onClick={mintNFTs} className="mintBtn">
+          Mint
+        </button>
       </div>
     </div>
   );
