@@ -25,6 +25,7 @@ const Header = () => {
     abi: contractInterface,
     functionName: "whitelistMintEnabled",
   });
+
   return (
     <div>
       <div className="btnConnect">
@@ -43,24 +44,22 @@ const Header = () => {
                 target="_blank"
                 rel="noreferrer"
               />
-              <Card.Header>Steve Sanders</Card.Header>
-              <Card.Meta>Friends of Elliot</Card.Meta>
+              <Image
+                floated="right"
+                size="mini"
+                src={require(`./assets/images/etherscan.png`)}
+                href="https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8"
+                target="_blank"
+                rel="noreferrer"
+              />
+              <Card.Header>Rock Paper Scissors NFT!</Card.Header>
+              <Card.Meta>Contract Information</Card.Meta>
               <Card.Description>
                 Contract Status: {status.toString()}
                 <p>Whitelist Status: {wlStatus.toString()}</p>
                 <p>Total Minted: {totalSupply.toString()}</p>
                 Total Supply: {MaxSupply.toString()}
               </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-              <div className="ui two buttons">
-                <Button basic color="green">
-                  Approve
-                </Button>
-                <Button basic color="red">
-                  Decline
-                </Button>
-              </div>
             </Card.Content>
           </Card>
         </Card.Group>

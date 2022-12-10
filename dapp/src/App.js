@@ -10,7 +10,6 @@ function App() {
     <div className="page">
       <div className="header">
         <Header />
-        <div></div>
       </div>
       <div className="body"></div>
       <div className="mint">

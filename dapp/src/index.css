@@ -10,11 +10,15 @@
   padding: 20px;
   display: flex;
   align-items: center;
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
+  font-size: 16px;
   border-bottom: 1px solid #f2f2f2;
 }
-
+.btnConnect {
+  margin-left: 700px;
+  margin-right: 0;
+}
 .navbar h1 {
   color: #f1356d;
 }
@@ -35,7 +39,7 @@
   padding: 20px;
 }
 
-.header {
+/* .header {
   min-height: 45px;
   display: flex;
   align-items: center;
@@ -43,7 +47,7 @@
   padding: 5px 20px;
   font-size: 16px;
   background-color: rgb(109, 22, 106);
-}
+} */
 .button {
   border: none;
   border-radius: 50px;
