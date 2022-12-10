@@ -1,14 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+/* base styles */
 * {
   margin: 0;
-  padding: 0;
+  font-family: "Quicksand";
+  color: #333;
+}
+.header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  border-bottom: 1px solid #f2f2f2;
+}
+.osIcon {
+  width: 50px;
+  height: 50px;
+}
+/*
+.navbar h1 {
+  color: #f1356d;
+}
+.navbar .links {
+  margin-left: auto;
+}
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+.navbar a:hover {
+  color: #f1356d;
+} */
+.content {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
 }
 
-body {
-  font-family: Monaco, Consolas, "Courier New", monospace;
-  background-color: rgb(218, 213, 213);
-  color: white;
+/* .header {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 20px;
+  font-size: 16px;
+  background-color: rgb(109, 22, 106);
 }
-.hmiIcon {
-  width: 200px;
-  height: 200px;
-}
+.button {
+  border: none;
+  border-radius: 50px;
+  padding: 3px 9px;
+  cursor: pointer;
+  background-color: rgb(185, 187, 189);
+
+} */
