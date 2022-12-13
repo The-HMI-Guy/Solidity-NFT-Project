@@ -1,7 +1,3 @@
-import { ethers } from "ethers";
-import { useState, useEffect } from "react";
-import { FaEthereum } from "react-icons/fa";
-
 import Header from "./Header";
 import Mint from "./Mint";
 

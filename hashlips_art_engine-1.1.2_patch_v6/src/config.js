@@ -34,7 +34,7 @@ const format = {
 };
 
 const gif = {
-  export: false,
+  export: true,
   repeat: 0,
   quality: 100,
   delay: 500,

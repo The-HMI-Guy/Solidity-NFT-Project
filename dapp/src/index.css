@@ -2,52 +2,38 @@
 
 /* base styles */
 * {
-  margin: 0;
   font-family: "Quicksand";
-  color: #333;
+  color: rgb(69, 67, 67);
 }
-.header {
+/* .header {
   padding: 20px;
-  display: flex;
+  display:flex;
   align-items: center;
-  max-width: 1000px;
   margin: 0 auto;
   font-size: 16px;
   border-bottom: 1px solid #f2f2f2;
-}
-.btnConnect {
-  margin-left: 700px;
-  margin-right: 0;
-}
-.navbar h1 {
-  color: #f1356d;
-}
-.navbar .links {
-  margin-left: auto;
-}
-.navbar a {
-  margin-left: 16px;
-  text-decoration: none;
-  padding: 6px;
-}
-.navbar a:hover {
-  color: #f1356d;
-}
-.content {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-/* .header {
-  min-height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 20px;
-  font-size: 16px;
-  background-color: rgb(109, 22, 106);
 } */
+ /* .card {
+  backface-visibility: hidden;
+  border-radius: 5px;
+  min-height: 100%;
+  min-width: 100%;
+  position: absolute;
+  padding: 5px;
+
+  position: relative;
+  text-align: center;
+  background-color: red;
+}
+.cardHeader{
+  font-size: 500px;
+  background-color: blue;
+}  */
+.btnConnect {
+  padding: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+}
 .button {
   border: none;
   border-radius: 50px;
