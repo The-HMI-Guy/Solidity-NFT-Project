@@ -3,8 +3,8 @@ import Mint from "./Mint";
 
 function App() {
   return (
-    <div className="page">
-      <div className="header">
+    <div className="page ">
+      <div className="header ">
         <Header />
       </div>
       <div className="body"></div>
