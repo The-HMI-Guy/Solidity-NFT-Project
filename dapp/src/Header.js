@@ -1,7 +1,10 @@
 import { useContractRead } from "wagmi";
 import contractInterface from "./abi/abi.json";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Button, Card, Image} from "semantic-ui-react";
+import { Button, Card, Image } from "semantic-ui-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaEthereum } from "react-icons/fa";
+import { ethers } from "ethers";
 import "semantic-ui-css/semantic.min.css";
 
 const Header = () => {
@@ -25,7 +28,11 @@ const Header = () => {
     abi: contractInterface,
     functionName: "whitelistMintEnabled",
   });
-
+  const { data: Price } = useContractRead({
+    address: "0x58a56731d3177eec6e395b4397c00f6e1a1436a8",
+    abi: contractInterface,
+    functionName: "price",
+  });
   return (
     <div>
       <div className="btnConnect">
@@ -61,7 +68,13 @@ const Header = () => {
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-          <p>SUPPLY: {totalSupply.toString()}/{MaxSupply.toString()}</p>
+            <p>
+              SUPPLY: {totalSupply.toString()}/{MaxSupply.toString()}
+            </p>
+            <p>
+              Price: {ethers.utils.formatEther(Price)}
+              <FaEthereum />
+            </p>
           </Card.Content>
         </Card>
       </div>

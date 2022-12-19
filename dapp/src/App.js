@@ -6,11 +6,11 @@ function App() {
     <div className="page ">
       <div className="header ">
         <Header />
+        <div className="mint">
+          <Mint />
+        </div>
       </div>
       <div className="body"></div>
-      <div className="mint">
-        <Mint />
-      </div>
     </div>
   );
 }
