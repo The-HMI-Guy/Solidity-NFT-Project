@@ -7,6 +7,9 @@ import {
   useContractRead,
 } from "@thirdweb-dev/react";
 import "./styles/Home.css";
+import etherscanImage from "./assets/images/etherscan.png";
+import openseaImage from "./assets/images/OS-Blue.png";
+import gifImage from "./assets/images/nft.gif";
 
 const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
@@ -32,20 +35,39 @@ export default function Home() {
 
     <div className="container">
       <main className="main">
-        <h1 className="title">
-          Welcome to the Rock Paper Scissor NFT!
-        </h1>
+        <h1 className="title">Welcome to the Rock Paper Scissor NFT!</h1>
 
         <p className="description">
-          {!isLoading && nft ? (
+          <img alt="nft gif" src={gifImage}></img>
+
+          {/* {!isLoading && nft ? (
             <ThirdwebNftMedia metadata={nft.metadata} />
           ) : (
             <p>Loading...</p>
-          )}
+          )} */}
         </p>
 
         <div className="connect">
           <ConnectWallet />
+        </div>
+        <div className="grid">
+          <a href="https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8" className="card">
+            <img
+              width={"100px"}
+              height={"100px"}
+              alt="etherscan contract"
+              src={etherscanImage}
+            ></img>
+          </a>
+
+          <a href="https://testnets.opensea.io/collection/rockpaperscissors-9vlkhasx9z" className="card">
+            <img
+              width={"100px"}
+              height={"100px"}
+              alt="opensea"
+              src={openseaImage}
+            ></img>
+          </a>
         </div>
 
         <div className="grid">
