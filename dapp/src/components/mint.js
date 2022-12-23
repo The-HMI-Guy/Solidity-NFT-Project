@@ -1,8 +1,6 @@
 import {
   ConnectWallet,
   useContract,
-  useNFT,
-  useAddress,
   useContractRead,
   Web3Button,
 } from "@thirdweb-dev/react";
@@ -16,14 +14,13 @@ const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
   const { contract } = useContract(contractAddress);
-  const { data: name, isLoading: loadingName } = useContractRead(
+  const { data: price, isLoading: loadingName } = useContractRead(
     contract,
     "price"
   );
 
   return (
     <div>
-      
       <p className="description">
         <img alt="nft gif" src={previewGIF}></img>
       </p>
@@ -31,7 +28,7 @@ const Mint = () => {
       <div className="connect">
         <ConnectWallet />
       </div>
-      <p>Price{contract?.name}</p>
+      <p>Price: {price ? ethers.utils.formatEther(price.toString()) : 0}</p>
       <div className="grid">
         <a
           href="https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8"
