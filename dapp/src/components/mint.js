@@ -10,6 +10,7 @@ import etherscanImage from "../assets/images/etherscan.png";
 import openseaImage from "../assets/images/OS-Blue.png";
 import previewGIF from "../assets/images/preview.gif";
 
+
 const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
