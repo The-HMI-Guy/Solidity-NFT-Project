@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="container">
       <main className="main">
-        <h1 className="title">Welcome to the Rock Paper Scissor NFT!</h1>
+        <h1 className="title">Welcome to the Rock Paper Scissor NFT Minting Dapp!</h1>
         <Mint />
         <div className="grid">
           <a href="https://portal.thirdweb.com/" className="card">
