@@ -27,3 +27,8 @@ body {
   text-align: center;
   font-size:x-large;
 }
+.status {
+  border: double;
+  text-align: center;
+  font-size:x-large;
+}

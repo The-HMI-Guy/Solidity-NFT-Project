@@ -14,9 +14,17 @@ const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
   const { contract } = useContract(contractAddress);
-  const { data: price, isLoading: loadingName } = useContractRead(
+  const { data: price, isLoading: loadingPrice } = useContractRead(
     contract,
     "price"
+  );
+  const { data: paused, isLoading: loadingPaused } = useContractRead(
+    contract,
+    "paused"
+  );
+  const { data: wlEnabled, isLoading: loadingWlEnabled } = useContractRead(
+    contract,
+    "whitelistMintEnabled"
   );
 
   return (
@@ -25,6 +33,9 @@ const Mint = () => {
 
       <div className="price">
         <p>Price Per NFT: {price ? ethers.utils.formatEther(price.toString()) : 0} ETH</p>
+      </div>
+      <div className="status">
+        <p>Minting Status: {paused ? "Not Active" : "Active" } Whitelist Status: {wlEnabled ? "Active" : "Not Active" }</p>
       </div>
       <div className="connect">
         <Web3Button
