@@ -23,12 +23,19 @@ const Mint = () => {
     <div>
       <p className="description">
         <img alt="nft gif" src={previewGIF}></img>
+        <p>Price: {price ? ethers.utils.formatEther(price.toString()) : 0}</p>
       </p>
-
       <div className="connect">
-        <ConnectWallet />
+        <Web3Button
+          contractAddress={contractAddress}
+          action={(contract) => contract.call("mint", 1, { value: price })}
+          colorMode="dark"
+          accentColor="#050505"
+        >
+          Mint
+        </Web3Button>
       </div>
-      <p>Price: {price ? ethers.utils.formatEther(price.toString()) : 0}</p>
+      
       <div className="grid">
         <a
           href="https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8"
@@ -54,16 +61,7 @@ const Mint = () => {
           ></img>
         </a>
       </div>
-      <div>
-        <Web3Button
-          contractAddress={contractAddress}
-          action={(contract) => contract.call("mint", 1)}
-          colorMode="light"
-          accentColor="#F213A4"
-        >
-          Mint
-        </Web3Button>
-      </div>
+     
     </div>
   );
 };
