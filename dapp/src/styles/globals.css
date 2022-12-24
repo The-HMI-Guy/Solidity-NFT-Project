@@ -21,14 +21,16 @@ body {
 }
 .connect {
   width: 100%;
+  text-align: center;
+  font-size: x-large;
 }
 .price {
   border: double;
   text-align: center;
-  font-size:x-large;
+  font-size: x-large;
 }
 .status {
   border: double;
   text-align: center;
-  font-size:x-large;
+  font-size: x-large;
 }

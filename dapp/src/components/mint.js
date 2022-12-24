@@ -3,6 +3,7 @@ import {
   useContract,
   useContractRead,
   Web3Button,
+  useAddress
 } from "@thirdweb-dev/react";
 import { BigNumber, ethers } from "ethers";
 import "../styles/Home.css";
@@ -14,6 +15,7 @@ const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
   const { contract } = useContract(contractAddress);
+  const address = useAddress();
   const { data: price, isLoading: loadingPrice } = useContractRead(
     contract,
     "price"
@@ -35,7 +37,7 @@ const Mint = () => {
         <p>Price Per NFT: {price ? ethers.utils.formatEther(price.toString()) : 0} ETH</p>
       </div>
       <div className="status">
-        <p>Minting Status: {paused ? "Not Active" : "Active" } Whitelist Status: {wlEnabled ? "Active" : "Not Active" }</p>
+        <p>Minting Status: {paused ? "Not Active" : "Active" } Whitelist Status: {wlEnabled ? "Active" : "Not Active" } Add: {address}</p>
       </div>
       <div className="connect">
         <Web3Button
