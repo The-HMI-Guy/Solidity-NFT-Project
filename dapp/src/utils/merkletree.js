@@ -1,3 +1,4 @@
+const userAddress = require('../components/mint');
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 const addresses = require("./addresses.json");
@@ -21,3 +22,4 @@ console.log("0x" + tree.getRoot().toString("hex"));
 const buf2hex = (x) => "0x" + x.toString("hex");
 const AddressProof = tree.getProof(leaf).map((x) => buf2hex(x.data));
 console.log(AddressProof);
+console.log("mint addy" + userAddress.address);

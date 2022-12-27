@@ -10,7 +10,6 @@ import etherscanImage from "../assets/images/etherscan.png";
 import openseaImage from "../assets/images/OS-Blue.png";
 import previewGIF from "../assets/images/preview.gif";
 
-
 const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
@@ -39,15 +38,12 @@ const Mint = () => {
 
       <div className="price">
         <p>
-          Price Per NFT:{" "}
-          {price ? ethers.utils.formatEther(price.toString()) : 0} ETH
+          Price: {price ? ethers.utils.formatEther(price.toString()) : 0} ETH
         </p>
       </div>
       <div className="status">
-        <p>
-          Minting Status: {paused ? "Not Active" : "Active"} Whitelist Status:{" "}
-          {wlEnabled ? "Active" : "Not Active"} Add: {address}
-        </p>
+        <p>Contract Status: {paused ? "Paused" : "Live"}</p>
+        <p> Whitelist Status: {wlEnabled ? "Active" : "Not Active"}</p>
       </div>
       <div className="connect">
         <Web3Button
