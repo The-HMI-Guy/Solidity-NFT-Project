@@ -1,25 +1,20 @@
-const userAddress = require('../components/mint');
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 const addresses = require("./addresses.json");
 
-const leaves = addresses.map((x) => keccak256(x));
-const tree = new MerkleTree(leaves, keccak256, { sort: true });
-const root = tree.getRoot().toString("hex");
-const leaf = keccak256(addresses[19]);
-const proof = tree.getProof(leaf);
+//let dappAddress = "";
 
-// console.log(tree.verify(proof, leaf, root)); // true
+const findHexProof = async (dappAddress) => {
+  let indexOfArray = await addresses.indexOf(dappAddress);
+  let leafNode = addresses.map((dappAddress) => keccak256(dappAddress));
+  const tree = new MerkleTree(leafNode, keccak256, { sortPairs: true });
+  const clamingAddress = leafNode[indexOfArray];
+  const hexProof = tree.getHexProof(clamingAddress);
+  console.log("HexProof: ", hexProof);
+  console.log("Root: ", "0x" + tree.getRoot().toString("hex"));
 
-// const badLeaves = addresses.map((x) => keccak256(x));
-// const badTree = new MerkleTree(badLeaves, keccak256);
-// const badLeaf = keccak256("0xAb8483F64d9C6d1EcF9b849Ae677dD3315835c69");
-// const badProof = badTree.getProof(badLeaf);
-// console.log(badTree.verify(badProof, badLeaf, root)); // false
-// console.log(tree.toString());
-console.log("0x" + tree.getRoot().toString("hex"));
+  return hexProof;
+};
 
-const buf2hex = (x) => "0x" + x.toString("hex");
-const AddressProof = tree.getProof(leaf).map((x) => buf2hex(x.data));
-console.log(AddressProof);
-console.log("mint addy" + userAddress.address);
+const result = findHexProof("0x7B05E576A5aC57aBebc1D26F83954b2c522FAa3d");
+console.log(result);
