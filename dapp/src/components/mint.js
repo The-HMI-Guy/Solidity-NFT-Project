@@ -10,14 +10,11 @@ import etherscanImage from "../assets/images/etherscan.png";
 import openseaImage from "../assets/images/OS-Blue.png";
 import previewGIF from "../assets/images/preview.gif";
 
-
 const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
   const { contract } = useContract(contractAddress);
   const address = useAddress();
-
-
 
   // =============================================================
   //                          CONTRACT READS
@@ -34,7 +31,6 @@ const Mint = () => {
     contract,
     "whitelistMintEnabled"
   );
-  
 
   return (
     <div>
@@ -42,7 +38,7 @@ const Mint = () => {
 
       <div className="price">
         <p>
-          Price: {price ? ethers.utils.formatEther(price.toString()) : 0} ETH
+          Price: {price ? ethers.utils.formatEther(price.toString()) : "loading"} ETH
         </p>
       </div>
       <div className="status">
