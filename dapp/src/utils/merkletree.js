@@ -1,8 +1,8 @@
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 const addresses = require("./addresses.json");
+const { verify } = require("merkle-proof");
 
-//let dappAddress = "";
 
 const findHexProof = async (dappAddress) => {
   let indexOfArray = await addresses.indexOf(dappAddress);
@@ -15,6 +15,12 @@ const findHexProof = async (dappAddress) => {
 
   return hexProof;
 };
+
+const verifyProof = async (hexProof, root, address) => {
+    const isValid = await verify(hexProof, root, address, keccak256);
+    return isValid;
+}
+
 
 const result = findHexProof("0x7B05E576A5aC57aBebc1D26F83954b2c522FAa3d");
 console.log(result);

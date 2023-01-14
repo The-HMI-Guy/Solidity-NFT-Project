@@ -9,12 +9,30 @@ import "../styles/globals.css";
 import etherscanImage from "../assets/images/etherscan.png";
 import openseaImage from "../assets/images/OS-Blue.png";
 import previewGIF from "../assets/images/preview.gif";
+import { useEffect, useState } from "react";
+import { findHexProof, verifyProof } from "merkletreejs";
 
 const contractAddress = "0x58a56731D3177eeC6e395B4397c00F6E1A1436a8";
 
 const Mint = () => {
   const { contract } = useContract(contractAddress);
   const address = useAddress();
+  console.log("User's address:", address);
+  const [hexProof, setHexProof] = useState(null);
+  const [isWhitelisted, setIsWhitelisted] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      const hexProof = await findHexProof(address);
+      setHexProof(hexProof);
+      const root = await contract.getRoot();
+      const isWhitelisted = await verifyProof(hexProof, root, address);
+      setIsWhitelisted(isWhitelisted);
+    }
+    if (address) {
+      fetchData();
+    }
+  }, [address, contract]);
 
   // =============================================================
   //                          CONTRACT READS
