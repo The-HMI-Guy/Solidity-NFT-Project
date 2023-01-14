@@ -1,4 +1,4 @@
-import "./styles/Home.css";
+import "./styles/globals.css";
 import Mint from "./components/mint";
 
 

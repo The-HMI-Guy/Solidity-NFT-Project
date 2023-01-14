@@ -5,7 +5,7 @@ import {
   useAddress,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
-import "../styles/Home.css";
+import "../styles/globals.css";
 import etherscanImage from "../assets/images/etherscan.png";
 import openseaImage from "../assets/images/OS-Blue.png";
 import previewGIF from "../assets/images/preview.gif";
@@ -38,7 +38,8 @@ const Mint = () => {
 
       <div className="price">
         <p>
-          Price: {price ? ethers.utils.formatEther(price.toString()) : "loading"} ETH
+          Price:{" "}
+          {price ? ethers.utils.formatEther(price.toString()) : "loading"} ETH
         </p>
       </div>
       <div className="status">
@@ -56,29 +57,27 @@ const Mint = () => {
         </Web3Button>
       </div>
 
-      <div className="grid">
+      <div class="grid-container">
         <a
           href="https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8"
-          className="card"
+          class="card"
         >
-          {" "}
           <h2>Contract</h2>
           <img
-            width={"100px"}
-            height={"100px"}
+            width="100px"
+            height="100px"
             alt="etherscan contract"
             src={etherscanImage}
           ></img>
         </a>
-
         <a
           href="https://testnets.opensea.io/collection/rockpaperscissors-9vlkhasx9z"
-          className="card"
+          class="card"
         >
           <h2>Opensea</h2>
           <img
-            width={"100px"}
-            height={"100px"}
+            width="100px"
+            height="100px"
             alt="opensea"
             src={openseaImage}
           ></img>

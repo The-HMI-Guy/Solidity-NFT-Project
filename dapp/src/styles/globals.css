@@ -1,37 +1,88 @@
-html,
+/* Global styles */
 body {
-  padding: 0;
+  font-family: Arial, sans-serif;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  padding: 0;
 }
-
-a {
-  color: #7dd3fc;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  color: #e7e8e8;
-  background: #0f1318;
-}
-.connect {
-  width: 75%;
-  padding-left: 25%;
+/* center the title */
+.title {
   text-align: center;
-  font-size: x-large;
 }
+img {
+  width: 80%;
+  display: block; /* added */
+  margin: auto; /* added */
+}
+
+/* Styles for the price display */
 .price {
-  border: double;
+  font-size: 24px;
   text-align: center;
-  font-size: x-large;
+  padding: 20px;
 }
+
+/* Styles for the contract status display */
 .status {
-  border: double;
+  font-size: 18px;
   text-align: center;
-  font-size: x-large;
+  padding: 10px;
+}
+
+/* Styles for the "Mint" button */
+.connect {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Styles for the grid of links */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  padding: 20px;
+}
+.grid-container {
+  display: grid; /* set the container to use grid layout */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* set the columns to automatically adjust to the size of the cards */
+  grid-gap: 5px; /* add gap between the cards */
+  align-items: center; /* center the cards vertically */
+  justify-items: center; /* center the cards horizontally */
+}
+
+
+/* Make the contract and OpenSea cards smaller */
+.card {
+  width: 200px; /* set the width of the cards */
+  height: 250px; /* set the height of the cards */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 20px;
+  transition: all 0.2s ease-in-out; /* add transition */
+}
+
+/* Highlight the cards when hovered */
+.card:hover {
+  background-color: #f0f0f0; /* change the background color when hovered */
+  box-shadow: 0px 5px 10px #ccc; /* add a box shadow when hovered */
+  transform: scale(1.1); /* scale up the card when hovered */
+}
+
+/* center the title */
+.card h2 {
+  font-size: 24px;
+  margin: 0;
+  padding: 10px 0;
+  text-align: center; /* added */
+}
+
+.card img {
+  max-width: 150px;
+  width: auto;
+  height: auto;
+  display: block; /* added */
+  margin: auto; /* added */
 }
