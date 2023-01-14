@@ -18,13 +18,11 @@ const Mint = () => {
   const { contract } = useContract(contractAddress);
   const address = useAddress();
   console.log("User's address:", address);
-  const [hexProof, setHexProof] = useState(null);
   const [isWhitelisted, setIsWhitelisted] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       const hexProof = await findHexProof(address);
-      setHexProof(hexProof);
       const root = await contract.getRoot();
       const isWhitelisted = await verifyProof(hexProof, root, address);
       setIsWhitelisted(isWhitelisted);
@@ -75,10 +73,10 @@ const Mint = () => {
         </Web3Button>
       </div>
 
-      <div class="grid-container">
+      <div className="grid-container">
         <a
           href="https://goerli.etherscan.io/address/0x58a56731D3177eeC6e395B4397c00F6E1A1436a8"
-          class="card"
+          className="card"
         >
           <h2>Contract</h2>
           <img
@@ -90,7 +88,7 @@ const Mint = () => {
         </a>
         <a
           href="https://testnets.opensea.io/collection/rockpaperscissors-9vlkhasx9z"
-          class="card"
+          className="card"
         >
           <h2>Opensea</h2>
           <img
