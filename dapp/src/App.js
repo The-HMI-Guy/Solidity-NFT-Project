@@ -1,6 +1,7 @@
 import "./styles/Home.css";
 import Mint from "./components/mint";
 
+
 export default function Home() {
   return (
     <div className="container">
