@@ -11,6 +11,7 @@
     "@thirdweb-dev/sdk": "^3",
     "ethers": "^5.7.2",
     "keccak256": "^1.0.6",
+    "merkle-proof": "^1.0.2",
     "merkletreejs": "^0.3.9",
     "react": "^18.2",
     "react-dom": "^18.2",
