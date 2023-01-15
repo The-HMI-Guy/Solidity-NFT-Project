@@ -43,10 +43,11 @@ const Mint = () => {
   useEffect(() => {
     async function fetchData() {
       const hexProof = await findHexProof(address);
-      const root = merkleRoot.toString();
+      const root = merkleRoot;
       console.log("Root ", root);
       const isWhitelisted = await verifyProof(hexProof, root, address);
       setIsWhitelisted(isWhitelisted);
+      console.log("wl: ", isWhitelisted);
     }
     if (address) {
       fetchData();
@@ -65,6 +66,9 @@ const Mint = () => {
       <div className="status">
         <p>Contract Status: {paused ? "Paused" : "Live"}</p>
         <p> Whitelist Status: {wlEnabled ? "Active" : "Not Active"}</p>
+        <div className={`whitelist-status ${isWhitelisted ? 'whitelisted' : 'not-whitelisted'}`}>
+          <p>Whitelist Status: {isWhitelisted ? "Whitelisted" : "Not Whitelisted"}</p>
+        </div>
       </div>
       <div className="connect">
         <Web3Button

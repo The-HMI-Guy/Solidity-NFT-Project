@@ -49,7 +49,10 @@ img {
 
 .grid-container {
   display: grid; /* set the container to use grid layout */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* set the columns to automatically adjust to the size of the cards */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, 1fr)
+  ); /* set the columns to automatically adjust to the size of the cards */
   grid-gap: 5px; /* add gap between the cards */
   align-items: center; /* center the cards vertically */
   justify-items: center; /* center the cards horizontally */
@@ -79,12 +82,16 @@ color: #f0f0f0; / change the text color to light */
 }
 
 .card:hover {
-background-color: #444; /* change the background color when hovered to a darker color /
+  background-color: #444; /* change the background color when hovered to a darker color /
 box-shadow: 0px 5px 10px #ccc; / keep the box shadow when hovered */
 }
 
 .connect button {
-background: linear-gradient(to right, #ff7f50, #ffcba4); /* change the button background color /
+  background: linear-gradient(
+    to right,
+    #ff7f50,
+    #ffcba4
+  ); /* change the button background color /
 border-radius: 10px;
 padding: 10px 20px;
 font-size: 18px;
@@ -92,57 +99,61 @@ font-weight: bold;
 text-transform: uppercase;
 letter-spacing: 2px;
 color: #333; / change the button text color */
-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .connect button:hover {
-background: linear-gradient(to left, #ff7f50, #ffcba4); /* change the button background color on hover */
-transform: scale(1.1);
+  background: linear-gradient(
+    to left,
+    #ff7f50,
+    #ffcba4
+  ); /* change the button background color on hover */
+  transform: scale(1.1);
 }
 
 .grid-container a {
-text-decoration: none;
-color: #f0f0f0; /* change the link color to light */
+  text-decoration: none;
+  color: #f0f0f0; /* change the link color to light */
 }
 
 .grid-container a:hover {
-color: #ff7f50; /* change the link color on hover */
+  color: #ff7f50; /* change the link color on hover */
 }
 
 .grid-container img {
-max-width: 100%;
-height: auto;
-margin-top: 20px;
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
 }
 
 .grid-container img:hover {
   transform: scale(1.1);
   transition: all 0.2s ease-in-out;
-  }
-  
-  /* Add a dark background color to the entire page */
-  body {
+}
+
+/* Add a dark background color to the entire page */
+body {
   background-color: #333;
-  }
-  
-  /* Add a dark background color to the title */
-  .title {
+}
+
+/* Add a dark background color to the title */
+.title {
   background-color: #444;
   padding: 20px;
-  }
-  
-  /* Add a dark background color to the price display */
-  .price {
+}
+
+/* Add a dark background color to the price display */
+.price {
   background-color: #444;
   padding: 20px;
-  }
-  
-  /* Add a dark background color to the contract status display */
-  .status {
+}
+
+/* Add a dark background color to the contract status display */
+.status {
   background-color: #444;
   padding: 10px;
-  }
-  
+}
+
 /* Add a dark background color to the "Connect" button */
 .connect button {
   background-color: #333;
@@ -156,41 +167,60 @@ margin-top: 20px;
 
 /* Add a dark background color to the price display */
 .price {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the contract status display */
 .status {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the connect button */
 .connect {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the grid of links */
 .grid {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the grid container */
 .grid-container {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the cards */
 .card {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the card title */
 .card h2 {
-background-color: #444;
+  background-color: #444;
 }
 
 /* Add a dark background color to the card image */
 .card img {
-background-color: #444;
+  background-color: #444;
 }
 
+.whitelist-status {
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+}
+
+.whitelisted {
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+  color: #00ff00;
+}
+
+.not-whitelisted {
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+  color: #ff0000;
+}
