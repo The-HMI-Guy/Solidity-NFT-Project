@@ -1,5 +1,5 @@
-const MerkleTree = require("merkletreejs").MerkleTree;
-const verify = require("merkle-proof").verify;
+const { MerkleTree } = require("merkletreejs");
+const { verify } = require("merkle-proof");
 const keccak256 = require("keccak256");
 const addresses = require("./addresses.json");
 
@@ -18,3 +18,6 @@ const verifyProof = (hexProof, root, address) => {
   const isValid = verify(hexProof, root, address, keccak256);
   return isValid;
 };
+
+exports.findHexProof = findHexProof;
+exports.verifyProof = verifyProof;

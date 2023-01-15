@@ -18,19 +18,7 @@ const Mint = () => {
   const { contract } = useContract(contractAddress);
   const address = useAddress();
   console.log("User's address:", address);
-  const [isWhitelisted, setIsWhitelisted] = useState(false);
-
-  useEffect(() => {
-    async function fetchData() {
-      const hexProof = await findHexProof(address);
-      const root = await contract.getRoot();
-      const isWhitelisted = await verifyProof(hexProof, root, address);
-      setIsWhitelisted(isWhitelisted);
-    }
-    if (address) {
-      fetchData();
-    }
-  }, [address, contract]);
+  
 
   // =============================================================
   //                          CONTRACT READS
@@ -47,7 +35,23 @@ const Mint = () => {
     contract,
     "whitelistMintEnabled"
   );
+  const { data: merkleRoot, isLoading: loadingMerkleRoot } = useContractRead(
+    contract,
+    "merkleRoot"
+  );
+  const [isWhitelisted, setIsWhitelisted] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      const hexProof = await findHexProof(address);
+      const root = merkleRoot;
+      const isWhitelisted = await verifyProof(hexProof, root, address);
+      setIsWhitelisted(isWhitelisted);
+    }
+    if (address) {
+      fetchData();
+    }
+  }, [address, contract, merkleRoot]);
   return (
     <div>
       <img alt="nft gif" src={previewGIF}></img>
