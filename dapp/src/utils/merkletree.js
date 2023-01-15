@@ -5,6 +5,7 @@ const addresses = require("./addresses.json");
 
 const findHexProof = (address) => {
   let indexOfArray = addresses.indexOf(address);
+  console.log("index: ", indexOfArray);
   let leafNode = addresses.map((address) => keccak256(address));
   const tree = new MerkleTree(leafNode, keccak256, { sortPairs: true });
   const clamingAddress = leafNode[indexOfArray];

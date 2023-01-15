@@ -3,7 +3,7 @@ const keccak256 = require("keccak256");
 const addresses = require("./addresses.json");
 
 const leaves = addresses.map((x) => keccak256(x));
-const tree = new MerkleTree(leaves, keccak256, { sort: true });
+const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 const root = tree.getRoot().toString("hex");
 const leaf = keccak256(addresses[19]);
 const proof = tree.getProof(leaf);

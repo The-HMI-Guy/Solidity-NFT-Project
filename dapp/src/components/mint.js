@@ -18,7 +18,6 @@ const Mint = () => {
   const { contract } = useContract(contractAddress);
   const address = useAddress();
   console.log("User's address:", address);
-  
 
   // =============================================================
   //                          CONTRACT READS
@@ -44,7 +43,8 @@ const Mint = () => {
   useEffect(() => {
     async function fetchData() {
       const hexProof = await findHexProof(address);
-      const root = merkleRoot;
+      const root = merkleRoot.toString();
+      console.log("Root ", root);
       const isWhitelisted = await verifyProof(hexProof, root, address);
       setIsWhitelisted(isWhitelisted);
     }
